@@ -21,6 +21,12 @@
                 </div>
             </van-list>
         </div>
+
+        <div class="buttom">
+          
+             ￥1555
+          
+        </div>
     </div>
 </template>
 <script>
@@ -69,6 +75,9 @@ export default {
 };
 </script>
 <style scoped>
+.order_contain{
+  
+}
 .top{
     font-size: 30px;
     padding-top: 20px;
@@ -94,10 +103,21 @@ export default {
     height: 80;
     margin-top: 10px;
 }
+.list-group{
+  position: relative;
+  margin-bottom: 60px;
+}
+.list-item{
+  height: 50px;
+  display: flex;
+  flex-direction: row;
+  padding: 12px;
+  background-color: #FFFFFF;
+  border-bottom: 1px solid #3333;
+}
 .list-item img{
-  width: 100px;
-  height: 100px;
-
+  width: 50px;
+  height: 50px;
 }
 .info{
   display: flex;
@@ -106,8 +126,22 @@ export default {
   justify-content: space-between;
 }
 .info p{
-  margin:0;
+  margin-left: 7px;
   text-align: left;
-  margin-left: 10px;
+}
+.btn{
+  width: 80px;
+   position: relative;
+   top:40%;
+}
+.buttom{
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+  height: 60px;
+  font-size: 16px;
+  line-height: 60px;
+  background-color: #FFFFFF;
+  text-align: left;
 }
 </style>
