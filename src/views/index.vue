@@ -87,6 +87,15 @@ export default {
     };
   },
   created() {
+
+    let {tableNum} = this.$route.query
+      if(tableNum){
+        // 其他页面 通过 localStorage.getItem('tableNum')取值
+        localStorage.setItem('tableNum',tableNum)
+        // 这个页面 可以通过this.tableNum 获取
+        this.tableNum = tableNum
+      }
+   
     this.getFootList()
     this.getFootTypeList()
   },
