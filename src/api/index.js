@@ -15,10 +15,16 @@ export function getFootTypeList(){
 }
 
 export function placeOrder(data){
-    console.log(data)
     return request({
         url: '/order/',
         method: 'post',
         data
+    })
+}
+
+export function orderDetail(tableId){
+    return request({
+        url: '/order/admin/table/' + tableId,
+        method: 'get'
     })
 }

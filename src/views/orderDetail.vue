@@ -6,9 +6,9 @@
             <div class="discription"><span>后厨正在制作，您的菜马上就到</span></div>
         </div>
         <div class="body">
-            <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
+            <van-list v-model="loading" :finished="finished" finished-text="" @load="onLoad">
                 <div class="list-group">
-                    <div class="list-item" v-for="(info,ind) in order.listItem" :key="ind">
+                    <div class="list-item" v-for="(info,ind) in order.itemList" :key="ind">
                         <img :src="info.footResVo.picture" width="100%">
                         <div class="info">
                             <p>{{ info.footResVo.name}}</p>
@@ -24,42 +24,32 @@
 
         <div class="buttom">
           
-             ￥1555
+             总价：{{order.money}}
           
         </div>
     </div>
 </template>
 <script>
-
+import { orderDetail } from '@/api/index'
 export default {
   data() {
     return {
       tableId: 12,
       order: {
-        id: 12,
-        money: 1651.66,
-        tableId: 12,
+        id: 0,
+        money: 0,
+        tableId: 0,
         isPay: 0,
-        listItem: [
-          {count: 3, money: 62.97, footResVo: {id: 2, name: "大白菜" , description: "大白菜下大白兔", picture: "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1585310671812&di=d57c765a31d44f2f45ffa145f2b538f9&imgtype=0&src=http%3A%2F%2Fdingyue.nosdn.127.net%2FoOIc9rGo5SNa4aAaVK15V1rzAPgFilHCMPHzK1cwhEx0N1535154479165.jpg"}},
-          {count: 3, money: 62.97, footResVo: {id: 2, name: "大白菜" , description: "大白菜下大白兔", picture: "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1585310671812&di=d57c765a31d44f2f45ffa145f2b538f9&imgtype=0&src=http%3A%2F%2Fdingyue.nosdn.127.net%2FoOIc9rGo5SNa4aAaVK15V1rzAPgFilHCMPHzK1cwhEx0N1535154479165.jpg"}},
-          {count: 3, money: 62.97, footResVo: {id: 2, name: "大白菜" , description: "大白菜下大白兔", picture: "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1585310671812&di=d57c765a31d44f2f45ffa145f2b538f9&imgtype=0&src=http%3A%2F%2Fdingyue.nosdn.127.net%2FoOIc9rGo5SNa4aAaVK15V1rzAPgFilHCMPHzK1cwhEx0N1535154479165.jpg"}},
-          {count: 3, money: 62.97, footResVo: {id: 2, name: "大白菜" , description: "大白菜下大白兔", picture: "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1585310671812&di=d57c765a31d44f2f45ffa145f2b538f9&imgtype=0&src=http%3A%2F%2Fdingyue.nosdn.127.net%2FoOIc9rGo5SNa4aAaVK15V1rzAPgFilHCMPHzK1cwhEx0N1535154479165.jpg"}},
-          {count: 3, money: 62.97, footResVo: {id: 2, name: "大白菜" , description: "大白菜下大白兔", picture: "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1585310671812&di=d57c765a31d44f2f45ffa145f2b538f9&imgtype=0&src=http%3A%2F%2Fdingyue.nosdn.127.net%2FoOIc9rGo5SNa4aAaVK15V1rzAPgFilHCMPHzK1cwhEx0N1535154479165.jpg"}},
-          {count: 3, money: 62.97, footResVo: {id: 2, name: "大白菜" , description: "大白菜下大白兔", picture: "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1585310671812&di=d57c765a31d44f2f45ffa145f2b538f9&imgtype=0&src=http%3A%2F%2Fdingyue.nosdn.127.net%2FoOIc9rGo5SNa4aAaVK15V1rzAPgFilHCMPHzK1cwhEx0N1535154479165.jpg"}},
-          {count: 3, money: 62.97, footResVo: {id: 2, name: "大白菜" , description: "大白菜下大白兔", picture: "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1585310671812&di=d57c765a31d44f2f45ffa145f2b538f9&imgtype=0&src=http%3A%2F%2Fdingyue.nosdn.127.net%2FoOIc9rGo5SNa4aAaVK15V1rzAPgFilHCMPHzK1cwhEx0N1535154479165.jpg"}},
-          {count: 3, money: 62.97, footResVo: {id: 2, name: "大白菜" , description: "大白菜下大白兔", picture: "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1585310671812&di=d57c765a31d44f2f45ffa145f2b538f9&imgtype=0&src=http%3A%2F%2Fdingyue.nosdn.127.net%2FoOIc9rGo5SNa4aAaVK15V1rzAPgFilHCMPHzK1cwhEx0N1535154479165.jpg"}},
-          {count: 3, money: 62.97, footResVo: {id: 2, name: "大白菜" , description: "大白菜下大白兔", picture: "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1585310671812&di=d57c765a31d44f2f45ffa145f2b538f9&imgtype=0&src=http%3A%2F%2Fdingyue.nosdn.127.net%2FoOIc9rGo5SNa4aAaVK15V1rzAPgFilHCMPHzK1cwhEx0N1535154479165.jpg"}},
-          {count: 3, money: 62.97, footResVo: {id: 2, name: "大白菜" , description: "大白菜下大白兔", picture: "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1585310671812&di=d57c765a31d44f2f45ffa145f2b538f9&imgtype=0&src=http%3A%2F%2Fdingyue.nosdn.127.net%2FoOIc9rGo5SNa4aAaVK15V1rzAPgFilHCMPHzK1cwhEx0N1535154479165.jpg"}},
-          {count: 3, money: 62.97, footResVo: {id: 2, name: "大白菜" , description: "大白菜下大白兔", picture: "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1585310671812&di=d57c765a31d44f2f45ffa145f2b538f9&imgtype=0&src=http%3A%2F%2Fdingyue.nosdn.127.net%2FoOIc9rGo5SNa4aAaVK15V1rzAPgFilHCMPHzK1cwhEx0N1535154479165.jpg"}},
-          {count: 3, money: 62.97, footResVo: {id: 2, name: "大白菜" , description: "大白菜下大白兔", picture: "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1585310671812&di=d57c765a31d44f2f45ffa145f2b538f9&imgtype=0&src=http%3A%2F%2Fdingyue.nosdn.127.net%2FoOIc9rGo5SNa4aAaVK15V1rzAPgFilHCMPHzK1cwhEx0N1535154479165.jpg"}},
-          {count: 3, money: 62.97, footResVo: {id: 2, name: "大白菜" , description: "大白菜下大白兔", picture: "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1585310671812&di=d57c765a31d44f2f45ffa145f2b538f9&imgtype=0&src=http%3A%2F%2Fdingyue.nosdn.127.net%2FoOIc9rGo5SNa4aAaVK15V1rzAPgFilHCMPHzK1cwhEx0N1535154479165.jpg"}},
-        ]
+        itemList: [],
+        loading: false,
+        finished: false
       },     
     };
   },
   created() {
-
+    this.orderDetail()
+    this.loading = false
+    this.finished = true
   },
   methods: {
     onLoad() {
@@ -70,7 +60,21 @@ export default {
       // 我可以监听变化
       console.log(index)
     },
-    
+    orderDetail(){
+      //获取桌号
+      let tableId = localStorage.getItem('tableId')
+      if(typeof(tableId) == "undefined" || tableId == null){
+        console.log("非法操作")
+        return
+      }
+      //调用后端服务器
+      orderDetail(tableId).then(response =>{
+          console.log(response.data)
+          this.order = response.data
+          console.log(this.order)
+          this.order.itemList = response.data.itemList
+      })
+    }
   }
 };
 </script>

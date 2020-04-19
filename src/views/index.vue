@@ -12,14 +12,14 @@
     <div class="mid">
       <div class="left">
         <van-sticky>
-        <van-sidebar v-model="activeKey" @change="onChange">
-          <van-sidebar-item
-            :title="item.name"
-            dot
-            v-for="(item,index) in titleGroup"
-            :key="index"
-          />
-        </van-sidebar>
+          <van-sidebar v-model="activeKey" @change="onChange">
+            <van-sidebar-item
+              :title="item.name"
+              dot
+              v-for="(item,index) in titleGroup"
+              :key="index"
+            />
+          </van-sidebar>
         </van-sticky>
       </div>
       <div class="right">
@@ -29,6 +29,7 @@
                   <img :src="info.picture" width="100%">
                   <div class="info">
                       <p>{{ info.name}}</p>
+                      <p class="description">{{ info.description}}</p>
                       <p>￥{{ info.money}}</p>
                   </div>
                   <div class="btn">
@@ -83,18 +84,18 @@ export default {
       car:[],
       infoItem:[],
       orderMoney: 0,
-      tableId: 12
+      tableId: 0
     };
   },
   created() {
-
-    let {tableNum} = this.$route.query
-      if(tableNum){
-        // 其他页面 通过 localStorage.getItem('tableNum')取值
-        localStorage.setItem('tableNum',tableNum)
-        // 这个页面 可以通过this.tableNum 获取
-        this.tableNum = tableNum
-      }
+    let tableId = this.$route.query
+    if(tableId != null){
+      // 其他页面 通过 localStorage.getItem('tableNum')取值
+      localStorage.setItem('tableId',tableId.tableId)
+      // 这个页面 可以通过this.tableNum 获取
+      this.tableId = tableId.tableId
+      this.finished = true
+    }
    
     this.getFootList()
     this.getFootTypeList()
@@ -114,7 +115,6 @@ export default {
     },
     getFootList(){
       getFootList().then(response => {
-          console.log(response.data)
           let list = response.data
           for(let i = 0; i < list.length; i++){
             let footItem = list[i]
@@ -125,7 +125,6 @@ export default {
     },
     getFootTypeList(){
       getFootTypeList().then(response =>{
-          console.log(response.data)
           this.titleGroup = response.data
       })
     },
@@ -188,10 +187,7 @@ export default {
         carVoReq.tableId = this.tableId
         //发送请求
         placeOrder(carVoReq).then(response => {
-          this.$message({
-              type: 'success',
-              message: '下单成功!'
-            })
+           this.$router.push({ path:'/orderDetail'  })
         })
       }).catch(() => {
         // on cancel
@@ -309,6 +305,10 @@ export default {
   flex-direction: row;
   justify-content: space-around;
 }
-
-
+.description{
+  font-size: 13px;
+}
+.van-sticky--fixed{
+  width: 85px;
+}
 </style>
